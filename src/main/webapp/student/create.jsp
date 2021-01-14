@@ -1,20 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ADMIN
-  Date: 1/12/2021
-  Time: 3:35 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Student Management Application</title>
 </head>
 <body>
 <center>
-    <h1>User Management</h1>
+    <h1>Student Management</h1>
     <h2>
-        <a href="users?action=users">List All Student</a>
+        <a href="student?action=student">List All Student</a>
     </h2>
 </center>
 <div align="center">
@@ -36,9 +32,9 @@
                 </td>
             </tr>
             <tr>
-                <th>Country:</th>
+                <th>Student testScore:</th>
                 <td>
-                    <input type="text" name="country" id="country" size="15"/>
+                    <input type="text" name="testScore" id="testScore" size="15"/>
                 </td>
             </tr>
             <tr>

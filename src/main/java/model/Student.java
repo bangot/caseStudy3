@@ -6,10 +6,18 @@ public class Student {
     private String sex;
     private int testScore;
 
+    public Student() {
+    }
+
     public Student(String name, String sex, int testScore) {
+        super();
+        this.name = name;
+        this.sex = sex;
+        this.testScore = testScore;
     }
 
     public Student(int id, String name, String sex, int testScore) {
+        super();
         this.id = id;
         this.name = name;
         this.sex = sex;

@@ -12,7 +12,7 @@ public interface IStudentDao {
     public boolean deleteStudent(int id)throws SQLException;
     public  boolean updateStudent(Student student) throws SQLException;
 
-    Student getStudentById(int id);
+    public Student getStudentById(int id);
 
-    void insertStudentStore(Student student) throws SQLException;
+    public void insertStudentStore(Student student) throws SQLException;
 }

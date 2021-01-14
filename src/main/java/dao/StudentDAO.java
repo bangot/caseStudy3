@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAO implements IStudentDao {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/student?StudentSL=false";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/student?useSSL=false";
     private String jdbcStudentname = "root";
     private String jdbcpassword = "1234567";
-    private static final String INSERT_STUDENT_SQL = "INSERT INTO student" + "(name,sex,testScore) VALUES" + "(?,?,?);";
-    private static final String SELECT_STUDENT_BY_ID = "select id, name,sex, testScore from student where id=?";
-    private static final String SELECT_ALL_STUDENT = "select* from student";
-    private static final String DELETE_STUDENT_SQL = "delete from student where is=?";
-    private static final String UPDATE_STUDENT_SQL = "update student set name=?,sex=?, testScore=?,where id=?";
+    private static final String INSERT_STUDENT_SQL = "INSERT INTO student " + "(name,sex,testScore) VALUES" + " (?,?,?);";
+    private static final String SELECT_STUDENT_BY_ID = "select id, name,sex, testScore from student where id=?;";
+    private static final String SELECT_ALL_STUDENT = "select * from student";
+    private static final String DELETE_STUDENT_SQL = "delete from student where id=?;";
+    private static final String UPDATE_STUDENT_SQL = "update student set name=?, sex=?, testScore=? where id=?;";
 
     public StudentDAO() {
 
@@ -24,7 +24,7 @@ public class StudentDAO implements IStudentDao {
     protected Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(jdbcURL, jdbcStudentname, jdbcpassword);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -52,7 +52,7 @@ public class StudentDAO implements IStudentDao {
     public Student selectStudent(int id) {
         Student student = null;
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_STUDENT);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_STUDENT_BY_ID);) {
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -114,7 +114,7 @@ public class StudentDAO implements IStudentDao {
     @Override
     public Student getStudentById(int id) {
         Student student = null;
-        String query = "{CALL get_user_by_id(?)}";
+        String query = "{CALL get_student_by_id(?)}";
         try (Connection connection = getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, id);
@@ -134,14 +134,14 @@ public class StudentDAO implements IStudentDao {
 
     @Override
     public void insertStudentStore(Student student) throws SQLException {
-        String query = "{CALL insert_user(?,?,?)}";
+        String query = "{CALL insert_student(?,?,?)}";
         try (Connection connection = getConnection();
-             CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setString(1, student.getName());
-            callableStatement.setString(2, student.getSex());
-            callableStatement.setInt(3, student.getTestScore());
-            System.out.println(callableStatement);
-            callableStatement.executeUpdate();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_STUDENT_SQL);) {
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setString(2, student.getSex());
+            preparedStatement.setInt(3, student.getTestScore());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
         }
